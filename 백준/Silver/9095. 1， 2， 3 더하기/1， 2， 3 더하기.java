@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -12,56 +11,25 @@ public class Main {
 
         // 테스트 케이스 입력 받기
         Integer[] results = new Integer[N];
-        for(int i=0; i<N; i++){
+        for(int i=0; i<N; i++) {
+            int[] dp = new int[11]; //정수 n의 범위가 1~10이기 때문에, 인덱스도 10까지 생기도록 크기를 11로 설정
+            //단위값 설정
+            dp[0] = 0;
+            dp[1] = 1;
+            dp[2] = 2;
+            dp[3] = 4;
+            //발견한 dp 규칙 적용 : dp[n] = dp[n-1] + dp[n-2] + dp[n-3]
             Integer testCase = Integer.parseInt(br.readLine());
-            Integer result = 1; // 1로만 구성된 경우 카운트
-            //(1) 반드시 3을 사용하는 경우 : (1, 2, 3) / (1, 3) / (2, 3) / (3)
-            Integer max1 = 0;
-            Integer max2 = 0;
-            Integer max3 = testCase/3;
-            for(int count3=1; count3<=max3; count3++){ //반드시 3을 사용하니깐 1부터 시작
-                max2 = (testCase - (3 * count3))/2;
-                for(int count2=0; count2<=max2; count2++){
-                    if(max2 == 0) { // (1, 3) / (3)
-                        max1 = testCase - (3 * count3);
-                        result += count(max1, 0, count3);
-                    }else{ // (1, 2, 3) / (2, 3)
-                        max1 = testCase - (3 * count3) - (2 * count2);
-                        result += count(max1, count2, count3);
-                    }
-                }
+            for (int j = 4; j <= testCase; j++) {
+                dp[j] = dp[j - 1] + dp[j - 2] + dp[j - 3];
             }
-
-            //(2) 반드시 3을 제외하고 2를 사용하는 경우 : (1, 2) / (2)
-            max2 = testCase/2;
-            for(int count2=1; count2<=max2; count2++){ //반드시 2를 사용하니깐 1부터 시작
-                max1 = testCase - (2 * count2);
-                result += count(max1, count2, 0);
-            }
-            
             //결과 저장
-            results[i] = result;
+            results[i] = dp[testCase];
         }
-
+        
+        //결과 출력
         for(int i=0; i<results.length; i++){
             System.out.println(results[i]);
         }
-    }
-
-    public static Integer count(Integer count1, Integer count2, Integer count3){
-        Integer factorialAll = factorial(count1 + count2 + count3);
-        Integer factorial1 = (factorial(count1) == 0 ) ? 1 : factorial(count1);
-        Integer factorial2 = (factorial(count2) == 0 ) ? 1 : factorial(count2);
-        Integer factorial3 = (factorial(count3) == 0 ) ? 1 : factorial(count3);
-        Integer result = factorialAll / factorial1 / factorial2 / factorial3;
-        return result;
-    }
-
-    public static Integer factorial(Integer numb){
-        Integer result = 1;
-        for(int i=1; i<=numb; i++){
-            result *= i;
-        }
-        return result;
     }
 }
