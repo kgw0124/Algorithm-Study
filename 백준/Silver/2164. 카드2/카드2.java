@@ -19,7 +19,7 @@ public class Main {
         }
 
         while(queue.size() > 1){
-            // (2-2) 가장 작은 값(First In)을 꺼낸다.
+            // (2-2) 가장 작은 값(First In)을 꺼낸다(First Out).
             queue.poll();
             // (2-2) 2번째로 작은 값을 꺼낸다.
             int temp = queue.poll();
