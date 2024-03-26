@@ -1,14 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     // DFS
-    static int[][] graph1 = null;
+    static ArrayList<Integer>[] graph1 = null; // 메모리 초과 문제를 방지하기 위해 int[][] 대신 사용
     static boolean[] checker1 = null;
     static StringBuilder sb1 = new StringBuilder();
 
@@ -26,7 +23,10 @@ public class Main {
         int V = Integer.parseInt(st.nextToken()); // 탐색을 시작할 node의 번호
 
         // 이차배열 + 방문 여부 저장 배열 생성
-        graph1 = new int[N+1][N+1];
+        graph1 = new ArrayList[N+1];
+        for(int i=1; i<N+1; i++){
+            graph1[i] = new ArrayList<>();
+        }
         checker1 = new boolean[N+1];
         graph2 = new int[N+1][N+1];
         checker2 = new boolean[N+1];
@@ -36,10 +36,14 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
-            graph1[x][y] = graph1[y][x] = 1;
+            graph1[x].add(y);
+            graph1[y].add(x);
             graph2[x][y] = graph2[y][x] = 1;
         }
 
+        for(int i=1; i<N+1; i++){
+            Collections.sort(graph1[i]);
+        }
         DFS(V);
         System.out.println(sb1);
 
@@ -51,9 +55,9 @@ public class Main {
         checker1[startNode] = true;
         sb1.append(startNode).append(" ");
 
-        for(int i=1; i<checker1.length; i++){
-            if(graph1[startNode][i] == 1 && !checker1[i]){
-                DFS(i);
+        for(int endNode : graph1[startNode]){
+            if(!checker1[endNode]) {
+                DFS(endNode);
             }
         }
     }
@@ -66,7 +70,7 @@ public class Main {
         while(!queue.isEmpty()) {
             int temp = queue.poll();
             sb2.append(temp).append(" ");
-            
+
             for (int i = 1; i < checker2.length; i++) {
                 if (graph2[temp][i] == 1 && !checker2[i]) {
                     queue.add(i);
