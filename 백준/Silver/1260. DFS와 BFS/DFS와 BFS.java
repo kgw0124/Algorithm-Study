@@ -10,7 +10,7 @@ public class Main {
     static StringBuilder sb1 = new StringBuilder();
 
     // BFS
-    static int[][] graph2 = null;
+    static ArrayList<Integer>[] graph2 = null; // 메모리 초과 문제를 방지하기 위해 int[][] 대신 사용
     static boolean[] checker2 = null;
     static StringBuilder sb2 = new StringBuilder();
 
@@ -28,7 +28,10 @@ public class Main {
             graph1[i] = new ArrayList<>();
         }
         checker1 = new boolean[N+1];
-        graph2 = new int[N+1][N+1];
+        graph2 = new ArrayList[N+1];
+        for(int i=1; i<N+1; i++){
+            graph2[i] = new ArrayList<>();
+        }
         checker2 = new boolean[N+1];
 
         // 이차배열에 node 표시
@@ -36,17 +39,22 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
+            // 양방향 간선
             graph1[x].add(y);
             graph1[y].add(x);
-            graph2[x][y] = graph2[y][x] = 1;
+            graph2[x].add(y);
+            graph2[y].add(x);
         }
 
+        // 간선 관계를 가진 node가 여러 개인 경우, 작은 node부터 방문하기 때문
         for(int i=1; i<N+1; i++){
             Collections.sort(graph1[i]);
+            Collections.sort(graph2[i]);
         }
+        
         DFS(V);
         System.out.println(sb1);
-
+        
         BFS(V);
         System.out.println(sb2);
     }
@@ -71,10 +79,10 @@ public class Main {
             int temp = queue.poll();
             sb2.append(temp).append(" ");
 
-            for (int i = 1; i < checker2.length; i++) {
-                if (graph2[temp][i] == 1 && !checker2[i]) {
-                    queue.add(i);
-                    checker2[i] = true;
+            for(int endNode : graph2[temp]){
+                if(!checker2[endNode]){
+                    queue.add(endNode);
+                    checker2[endNode] = true;
                 }
             }
         }
