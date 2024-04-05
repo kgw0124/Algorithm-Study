@@ -2,61 +2,70 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main{
-    static List<Node>[] nodes;
-    static boolean[] check;
+    static int V;
+    static ArrayList<Node>[] graph;
+    static boolean[] checker;
     static int[] distance;
+
     public static void main(String[] args)throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] vAndE = br.readLine().split(" ");
-        int v = Integer.parseInt(vAndE[0]);
-        int e = Integer.parseInt(vAndE[1]);
-        nodes = new ArrayList[v+1];
-        check = new boolean[v+1];
-        distance = new int[v+1];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        V = Integer.parseInt(st.nextToken());
+        int E = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(br.readLine());
 
-        int start = Integer.parseInt(br.readLine());
-        for (int i = 0; i <= v; i++){
-            nodes[i] = new ArrayList<>();
-            distance[i] = Integer.MAX_VALUE;
+        // graph
+        graph = new ArrayList[V+1];
+        for (int i = 1; i < V+1; i++){
+            graph[i] = new ArrayList<>();
         }
-
-        for (int i = 0; i < e; i++){
-            String[] info = br.readLine().split(" ");
-            int from = Integer.parseInt(info[0]);
-            int to = Integer.parseInt(info[1]);
-            int value = Integer.parseInt(info[2]);
-            nodes[from].add(new Node(to, value));
+        for (int i = 0; i < E; i++){
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
+            graph[x].add(new Node(y, w));
         }
+        
+        // 디엑스트라
+        dij(K);
 
+        // 정답 출력
         StringBuilder sb = new StringBuilder();
-        dij(start);
-        for (int i = 1; i <=v; i++){
+        for (int i=1; i<V+1; i++){
             if (distance[i] == Integer.MAX_VALUE) {
                 sb.append("INF").append("\n");
             } else {
                 sb.append(distance[i]).append("\n");
             }
         }
-        System.out.println(sb);
+        System.out.print(sb);
     }
 
     public static void dij(int start){
-        PriorityQueue<Node> q = new PriorityQueue<>();
-        distance[start] = 0;
-        q.offer(new Node(start,0));
+        // distance
+        distance = new int[V+1];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        // checker
+        checker = new boolean[V+1];
 
-        while (!q.isEmpty()){
-            Node cur = q.poll();
-            check[cur.end] = true;
-            for(Node node : nodes[cur.end]){
-                if (!check[node.end]){
-                    if (distance[cur.end] + node.cost < distance[node.end]){
-                        distance[node.end] = distance[cur.end] + node.cost;
-                        q.offer(new Node(node.end, distance[node.end]));
+        PriorityQueue<Node> queue = new PriorityQueue<>();
+        distance[start] = 0;
+        queue.offer(new Node(start,0));
+
+        while (!queue.isEmpty()){
+            Node temp = queue.poll();
+            checker[temp.next] = true;
+            for(Node node : graph[temp.next]){
+                if (!checker[node.next]){
+                    if (distance[temp.next] + node.weight < distance[node.next]){
+                        distance[node.next] = distance[temp.next] + node.weight;
+                        queue.offer(new Node(node.next, distance[node.next]));
                     }
                 }
             }
@@ -65,16 +74,16 @@ public class Main{
 }
 
 class Node implements Comparable<Node>{
-    public int end;
-    public int cost;
+    public int next;
+    public int weight;
 
     @Override
-    public int compareTo(Node o){
-        return this.cost - o.cost;
+    public int compareTo(Node n){
+        return this.weight - n.weight;
     }
 
-    public Node(int end, int cost) {
-        this.end = end;
-        this.cost = cost;
+    public Node(int next, int weight) {
+        this.next = next;
+        this.weight = weight;
     }
 }
