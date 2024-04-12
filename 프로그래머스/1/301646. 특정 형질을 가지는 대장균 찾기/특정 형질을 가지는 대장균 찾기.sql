@@ -1,0 +1,5 @@
+-- 코드를 작성해주세요
+SELECT COUNT(*) AS COUNT
+FROM ECOLI_DATA
+WHERE GENOTYPE & 2 = FALSE -- 2(0010)번 형질을 가지지 않고
+AND (GENOTYPE & 1 OR GENOTYPE & 4) -- 1(0001)번 또는 3(0100)번 형질을 가질 것
