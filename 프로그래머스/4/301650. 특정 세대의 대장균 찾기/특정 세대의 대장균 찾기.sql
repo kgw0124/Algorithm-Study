@@ -1,0 +1,18 @@
+-- 코드를 작성해주세요
+WITH firstGen AS (
+    SELECT ID
+    FROM ECOLI_DATA
+    WHERE PARENT_ID IS NULL
+), secondGen AS(
+    SELECT ID
+    FROM ECOLI_DATA
+    WHERE PARENT_ID in (SELECT ID FROM firstGen)
+), thirdGen AS(
+    SELECT ID
+    FROM ECOLI_DATA
+    WHERE PARENT_ID in (SELECT ID FROM secondGen)
+)
+
+SELECT *
+FROM thirdGen
+ORDER BY ID
