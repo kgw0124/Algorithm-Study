@@ -1,0 +1,9 @@
+-- 코드를 입력하세요
+WITH maxPrice AS(
+    SELECT MAX(PRICE) AS maxPrice
+    FROM FOOD_PRODUCT
+)
+
+SELECT *
+FROM FOOD_PRODUCT
+WHERE PRICE = (SELECT maxPrice FROM maxPrice)
