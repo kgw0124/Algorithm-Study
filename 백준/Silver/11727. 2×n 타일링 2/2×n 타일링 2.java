@@ -9,7 +9,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        // (2) DP 수행 : DP[n] = DP[n-1] + DP[n-2]*2
+        // (2) DP 수행 : DP[n] = (DP[n-1] + DP[n-2]*2) % 10007
         int[] DP = new int[1001];
         DP[1] = 1;
         DP[2] = 3;
