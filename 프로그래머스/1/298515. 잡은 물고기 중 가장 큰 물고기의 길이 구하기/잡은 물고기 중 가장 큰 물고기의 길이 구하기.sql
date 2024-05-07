@@ -1,0 +1,8 @@
+-- 코드를 작성해주세요
+WITH maxLength AS(
+    SELECT MAX(LENGTH) AS MAX_LENGTH
+    FROM FISH_INFO
+)
+
+SELECT CONCAT(MAX_LENGTH,"cm") AS MAX_LENGTH
+FROM maxLength
