@@ -1,30 +1,30 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(int[] array, int[][] commands) {   
+    public int[] solution(int[] array, int[][] commands) {
         int[] answer = new int[commands.length];
         
-        for(int i=0; i<commands.length; i++){
-            int start = commands[i][0] - 1;
-            int end = commands[i][1] - 1;          
-            if(start == end){ // [4,4,1]과 같은 경우
-                answer[i] = array[start];
-                continue;
-            }
-            int find = commands[i][2] - 1; 
+        for(int index=0; index<commands.length; index++){
+            int[] command = commands[index];
             
-            int[] temp = new int[end - start + 1];
-            int tempIndex = 0;
-            for(int j=start; j<=end; j++){ // array 및 commands의 길이 범위가 작아서 중첩 반복문 사용해도 괜찮다.
-                temp[tempIndex] = array[j];
-                tempIndex++;
-            }
+            int i = command[0] -1; // index 처리 : 0부터 시작하니깐 1 빼기
+            int j = command[1] -1;
+            int k = command[2] -1;
+            ArrayList<Integer> temp = cut(array, i, j);
+            
+            Collections.sort(temp);
+            
+            answer[index] = temp.get(k);
+        }        
 
-            Arrays.sort(temp); // 정렬 수행
-            
-            answer[i] = temp[find];
-        }
-        
         return answer;
+    }
+    
+    public ArrayList<Integer> cut(int[] array, int start, int end){
+        ArrayList<Integer> temp = new ArrayList<>();
+        for(int i=start; i<=end; i++){
+            temp.add(array[i]);
+        }
+        return temp;
     }
 }
