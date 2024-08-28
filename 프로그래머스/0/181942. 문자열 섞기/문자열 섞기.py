@@ -3,7 +3,6 @@ def solution(str1, str2):
     
     answer = ''
     for i in range(length):
-        answer += str1[i] 
-        answer += str2[i]
+        answer += str1[i] + str2[i]
 
     return answer
