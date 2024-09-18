@@ -1,3 +1,3 @@
 def solution(myString):
-    myList = myString.replace("x", " ").split()
-    return sorted(myList)
+    myList = myString.split("x")
+    return sorted(filter(None,myList))
