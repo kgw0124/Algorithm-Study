@@ -1,6 +1,6 @@
 def solution(prev):
     count = 0
-    new = [i for i in prev]
+    new = prev[:]
     
     while True:
         count += 1
@@ -13,6 +13,6 @@ def solution(prev):
         if prev == new:
             break
         else:
-            prev = [i for i in new]
+            prev = new[:]
 
     return count-1
