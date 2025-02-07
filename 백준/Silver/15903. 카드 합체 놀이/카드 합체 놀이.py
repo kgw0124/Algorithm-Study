@@ -1,10 +1,17 @@
+import heapq
+
 n, m = map(int, input().split())
 arr = list(map(int, input().split()))
 
-for i in range(m):
-    arr.sort()
-    temp = arr[0] + arr[1]
-    arr[0] = temp
-    arr[1] = temp
+heap = []
+for i in arr:
+    heapq.heappush(heap, i)
 
-print(sum(arr))
+for i in range(m):
+    min1 = heapq.heappop(heap)
+    min2 = heapq.heappop(heap)
+
+    heapq.heappush(heap, min1 + min2)
+    heapq.heappush(heap, min1 + min2)
+
+print(sum(heap))
