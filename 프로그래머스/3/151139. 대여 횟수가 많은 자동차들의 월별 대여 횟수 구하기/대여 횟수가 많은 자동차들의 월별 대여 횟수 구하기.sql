@@ -7,6 +7,8 @@ WITH CAR AS (
     HAVING COUNT(CAR_ID) >= 5
 )
 
+# 아래 Query에 기간 조건 안 붙이면 틀린다!
+# 안 붙일 경우, 8~10월 사이에 5건 이상 존재하면서 7월에도 대여건이 존재한다면 결과값으로 7월에 해당하는 대여건까지 나온다.
 SELECT MONTH(START_DATE) AS MONTH, CAR.CAR_ID, COUNT(HISTORY_ID) AS RECORDS
 FROM CAR
     LEFT JOIN CAR_RENTAL_COMPANY_RENTAL_HISTORY HIS
