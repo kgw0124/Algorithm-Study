@@ -4,27 +4,19 @@ class Solution {
     public int[] solution(int[] array, int[][] commands) {
         int[] answer = new int[commands.length];
         
-        for(int index=0; index<commands.length; index++){
-            int[] command = commands[index];
-            
-            int i = command[0] -1; // index 처리 : 0부터 시작하니깐 1 빼기
-            int j = command[1] -1;
-            int k = command[2] -1;
-            ArrayList<Integer> temp = cut(array, i, j);
-            
-            Collections.sort(temp);
-            
-            answer[index] = temp.get(k);
-        }        
+        for(int idx=0; idx<commands.length; idx++){
+            int i = commands[idx][0];
+            int j = commands[idx][1];
+            int k = commands[idx][2];
 
-        return answer;
-    }
-    
-    public ArrayList<Integer> cut(int[] array, int start, int end){
-        ArrayList<Integer> temp = new ArrayList<>();
-        for(int i=start; i<=end; i++){
-            temp.add(array[i]);
+            ArrayList<Integer> temp = new ArrayList<>();
+            for (int idx2=i; idx2<=j; idx2++){
+                temp.add(array[idx2-1]);
+            }
+            Collections.sort(temp);
+            answer[idx] = temp.get(k-1);
         }
-        return temp;
+        
+        return answer;
     }
 }
