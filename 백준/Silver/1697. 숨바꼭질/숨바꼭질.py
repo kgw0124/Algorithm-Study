@@ -1,29 +1,24 @@
-# BFS
+# DFS
 from collections import deque
 
 def BFS(start, end):
-    answer = 0
-    checker = [0 for _ in range(100001)]
+    checker, dist = [0 for _ in range(100001)], [0 for _ in range(100001)]
 
-    queue = deque([start, 100001])
+    queue = deque([start])
     checker[start] = 1
 
     while queue:
         init = queue.popleft()
 
         if init == end:
-            return answer
-
-        if init == 100001:
-            queue.append(100001)
-            answer += 1
-            continue
+            return dist[init]
 
         for dx in [-1, 1, init]:
             nx = init + dx
             if 0 <= nx <= 100000 and checker[nx] == 0:
                 queue.append(nx)
                 checker[nx] = 1
+                dist[nx] = dist[init] + 1
                 
 # Main
 N, K = map(int, input().split())
