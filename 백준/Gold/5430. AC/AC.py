@@ -9,9 +9,9 @@ for i in range(T):
     queue = deque(input()[1:-1].split(','))
     
     if size == 0:
-        queue = deque([]) # 이거 안하면 queue = deque([''])로 처리되어서 size가 0이어도 pop() 했을 때 error 처리 안된다.
+        queue = deque()
 
-    flag = 0 # reverse의 횟수
+    flag = 0
     isBreak = False
     for f in func:
         if f == "R":
@@ -22,7 +22,7 @@ for i in range(T):
                 isBreak = True
                 break
             else:
-                if flag % 2 == 0: # 짝수번 reverse하면 원상복구
+                if flag % 2 == 0:
                     queue.popleft()
                     flag = 0
                 else:
@@ -31,7 +31,7 @@ for i in range(T):
     if isBreak:
         continue
 
-    if flag % 2 == 1: # 홀수번 reverse하면 reverse 수행
+    if flag % 2 == 1:
         queue.reverse()
 
     answer.append("[" + ','.join(queue) + "]")
