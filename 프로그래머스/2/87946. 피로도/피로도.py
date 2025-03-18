@@ -14,5 +14,4 @@ def solution(k, dungeons):
                 cnt += 1
         arr.append(cnt)
         
-    print(arr)
     return max(arr)
