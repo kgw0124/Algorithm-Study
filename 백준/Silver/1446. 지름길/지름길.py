@@ -24,9 +24,6 @@ def dijkstra(start):
     while queue:
         tmp1, now = heapq.heappop(queue)
 
-        if tmp1 > dist[now]:
-            continue
-
         for next, tmp2 in graph[now]:
             if tmp1 + tmp2 < dist[next]:
                 dist[next] = tmp1 + tmp2
